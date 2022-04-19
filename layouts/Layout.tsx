@@ -1,12 +1,19 @@
-import Head from "next/head"
+import Head from "next/head";
 
 export const Layout = ({ children }) => {
-    
-    return (
-        <div className="">
-              <Head>
-              <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet' />
-              <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.1.1/swiper-bundle.min.js" integrity="sha512-xm8JS2jGDMLpY/DrZkEMQecUx4uR7D+6k3+YrVldyuPF9jxqN4SkG0WQ7UjudUgmtL9tbAzfVyRY6hvIERi9HA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  return (
+    <div className="">
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css?family=Poppins"
+          rel="stylesheet"
+        />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.1.1/swiper-bundle.min.js"
+          integrity="sha512-xm8JS2jGDMLpY/DrZkEMQecUx4uR7D+6k3+YrVldyuPF9jxqN4SkG0WQ7UjudUgmtL9tbAzfVyRY6hvIERi9HA=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        ></script>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -17,7 +24,7 @@ export const Layout = ({ children }) => {
         <meta name="description" content="Yossef's Home" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com"  />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Sofia&display=swap"
           rel="stylesheet"
@@ -32,7 +39,7 @@ export const Layout = ({ children }) => {
           href="https://unpkg.com/swiper/swiper-bundle.min.css"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com"  />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
           rel="stylesheet"
@@ -47,14 +54,7 @@ export const Layout = ({ children }) => {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       </Head>
 
-   
-        
-<div className=" bg-slate-800">
-    
-{children}
-</div>
-
-      
-            </div>
-    )
-}
+      <div className=" bg-slate-800">{children}</div>
+    </div>
+  );
+};
