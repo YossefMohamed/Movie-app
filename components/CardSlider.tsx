@@ -1,14 +1,16 @@
+import { NextPage } from "next";
 import Image from "next/image";
 import React from "react";
 import { BsBookmark } from "react-icons/bs";
 import { MdMovie } from "react-icons/md";
 
-function CardSlider() {
+const  CardSlider:NextPage<{image : string; name : string }> = (props) => {
+  console.log("https://image.tmdb.org/t/p/w500/" + props.image)
   return (
     <div className="p-5 w-full h-[25rem] font-poppins cursor-pointer text-text-dark rounded-2xl opacity-80 hover:opacity-100 overflow-hidden relative">
       <div className="absolute top-0 left-0 bg-red-100 w-full h-full z-0 ">
         <Image
-          src="https://images.unsplash.com/photo-1650299838813-b28de4d66c2b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1228&q=80"
+          src={"https://image.tmdb.org/t/p/w500/" + props.image}
           layout="fill"
           objectFit="cover"
         />
@@ -27,7 +29,7 @@ function CardSlider() {
           <div className="cat">PG</div>
         </h2>
 
-        <h1 className="text-4xl font-bold">The Lion King</h1>
+        <h1 className="text-4xl font-bold">{props.name}</h1>
       </div>
     </div>
   );
