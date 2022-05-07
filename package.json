@@ -1,5 +1,5 @@
 {
-  "name": "fullstack-soundtrack",
+  "name": "fullstack-movieapp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.2",
     "@chakra-ui/layout": "^1.8.0",
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
@@ -20,11 +21,14 @@
     "@types/cookies": "^0.7.7",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/react-howler": "^5.2.0",
+    "apollo-server-micro": "^3.6.7",
     "bcrypt": "^5.0.1",
     "easy-peasy": "^5.0.4",
     "format-duration": "^2.0.0",
     "framer-motion": "^6.3.0",
+    "graphql": "^16.4.0",
     "keen-slider": "^6.6.9",
+    "mongoose": "^6.3.2",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",

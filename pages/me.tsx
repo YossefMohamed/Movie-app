@@ -17,7 +17,7 @@ export default function ME() {
         </div>
         <div className="items-stretch flex flex-col justify-center gap-4">
           <div className="text-6xl font-bold ">Yossef Mohamed</div>
-          <div className="info flex items-center w-1/4 gap-3 text-2xl">
+          <div className="info flex items-center  gap-3 text-2xl ">
             <BsBookmark /> <div className="number">50</div> Bookmarked Movies
           </div>
         </div>

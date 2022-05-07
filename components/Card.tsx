@@ -5,15 +5,25 @@ import React from "react";
 import { BsBookmark } from "react-icons/bs";
 import { MdMovie } from "react-icons/md";
 
-const Card :NextPage<{image : string; name : string ; lang:string ; date : string ; id:number }>  =(props) => {
+const Card: NextPage<{
+  image: string;
+  name: string;
+  lang: string;
+  date: string;
+  id: number;
+}> = (props) => {
   return (
     <div className="py-5 flex flex-col font-poppins text-text-dark rounded-2xl opacity-95 hover:opacity-100 relative">
       <div className=" w-full z-0 h-[85%] rounded-xl overflow-hidden">
         <Image
-          src={"https://image.tmdb.org/t/p/w500/" + props.image}
+          src={
+            props.image
+              ? "https://image.tmdb.org/t/p/w500/" + props.image
+              : " https://i.ytimg.com/vi/np4n2DIOKVM/maxresdefault.jpg"
+          }
           layout="responsive"
           width={350}
-          height={300}
+          height={400}
           objectFit="cover"
         />
       </div>
@@ -24,24 +34,18 @@ const Card :NextPage<{image : string; name : string ; lang:string ; date : strin
       </div>
       <div className="p-5 mt-auto  flex-1">
         <h2 className="text-xl font-bold flex items-center gap-5 opacity-75">
-          <div className="year">
-            {new Date(props.date).getFullYear()}
-          </div>
+          <div className="year">{new Date(props.date).getFullYear()}</div>
           <div className="type flex items-center gap-2">
             <MdMovie /> Movie
           </div>
-          <div className="cat">
-            {props.lang}
-          </div>
-        </h2 >
+          <div className="cat">{props.lang}</div>
+        </h2>
         <Link href={`/show?id=${props.id}`}>
-    
-        <h1 className="text-4xl font-bold cursor-pointer">{props.name}</h1>
-      </Link>
-
+          <h1 className="text-4xl font-bold cursor-pointer">{props.name}</h1>
+        </Link>
       </div>
     </div>
   );
-}
+};
 
 export default Card;
