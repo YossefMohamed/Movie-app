@@ -1,9 +1,8 @@
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import CardSlider from "./CardSlider";
 import { NextPage } from "next";
 
-const Slider: NextPage<{trendShows:any}> =(props) =>{
+const Slider: NextPage<any> = (props) => {
   const [ref] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 2.5,
@@ -13,20 +12,9 @@ const Slider: NextPage<{trendShows:any}> =(props) =>{
 
   return (
     <div ref={ref} className="keen-slider">
-
-    {
-      props.trendShows.map(show => {
-        return (
-          <div className="keen-slider__slide  number-slide1 ">
-          <CardSlider name={show.title} image={show.backdrop_path} />
-        </div>
-        )})
-            }
-    
-     
-      
+      {props.children}
     </div>
   );
-}
+};
 
 export default Slider;
