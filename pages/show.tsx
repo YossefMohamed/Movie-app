@@ -44,7 +44,6 @@ export const getServerSideProps = async (context) => {
 
 export default function Show(props) {
   const router = useRouter();
-
   const [rating] = React.useState<number>(Number(props.data.vote_average) / 2);
   let counter = 0;
   return (
@@ -111,8 +110,8 @@ export default function Show(props) {
           </Slider>
         </div>
       </div>
-      <div className="flex section  my-[50px] ">
-        <div className="cast-container w-1/2 flex flex-col justify-start">
+      <div className="flex section  my-[50px] flex-wrap">
+        <div className="cast-container  sm:w-full lg:w-1/2 flex flex-col justify-start">
           <div className="text-6xl mb-[50px] font-bold uppercase ">Cast</div>
           <div className="cast-list flex flex-wrap justify-start gap-16 ">
             {props.data.credits.cast.map((cast, index) => {
@@ -149,7 +148,7 @@ export default function Show(props) {
             })}
           </div>
         </div>
-        <div className="description w-1/2 flex flex-col gap-16">
+        <div className="description sm:w-full lg:w-1/2 mt-16 lg:mt-0 flex flex-col gap-16">
           <div>
             <div className="text-6xl mb-[50px] font-bold uppercase">
               Description

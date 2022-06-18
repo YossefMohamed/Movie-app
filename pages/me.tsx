@@ -1,8 +1,26 @@
 import Image from "next/image";
 import React from "react";
 import { BsBookmark } from "react-icons/bs";
+import { gql } from "@apollo/client";
+import client from "./../apollo-client";
 
-export default function ME() {
+export async function getStaticProps() {
+  const { data } = await client.query({
+    query: gql`
+      query ExampleQuery {
+        _
+      }
+    `,
+  });
+
+  return {
+    props: {
+      user: data,
+    },
+  };
+}
+export default function ME(props) {
+  console.log(props);
   return (
     <div className="py-20">
       <div className="flex justify-start gap-20 items-stretch ">
