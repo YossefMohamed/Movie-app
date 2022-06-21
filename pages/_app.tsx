@@ -12,11 +12,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Layout>
         <div className="bg-primary-dark min-h-screen font-poppins text-text-dark  ">
           <div className=" flex justify-between gap-4  px-10 relative">
-            <div className="w-fit h-full  m-4">
+            <div className="w-fit h-full  m-4 hidden md:block!">
               <Header />
             </div>
 
-            <div className="flex-1 p-4 my-4 ml-20 overflow-hidden">
+            <div className="flex-1 p-4 my-4 overflow-hidden ml-0 md:ml-20">
               <div>
                 <SearchInput />
               </div>

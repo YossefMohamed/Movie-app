@@ -5,7 +5,7 @@ import { NextPage } from "next";
 const Slider: NextPage<any> = (props) => {
   const [ref] = useKeenSlider<HTMLDivElement>({
     slides: {
-      perView: 2.5,
+      perView:2.5,
       spacing: 15,
     },
   });

@@ -54,7 +54,7 @@ export const Layout = ({ children }) => {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       </Head>
 
-      <div className=" bg-slate-800">{children}</div>
+      <div className="bg-slate-800">{children}</div>
     </div>
   );
 };
