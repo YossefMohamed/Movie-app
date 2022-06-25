@@ -3,6 +3,9 @@ import React from "react";
 import { gql } from "@apollo/client";
 import client from "../apollo-client";
 import { useRouter } from "next/router";
+import Alert from "../components/Alert";
+import { login } from "../redux/user";
+import { useDispatch } from "react-redux";
 
 export default function Register(props) {
   const [name, setName] = React.useState("");
@@ -12,9 +15,10 @@ export default function Register(props) {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     if (
       name === "" ||
@@ -31,12 +35,7 @@ export default function Register(props) {
       setLoading(false);
       return;
     }
-    console.log({
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: passwordConfirm,
-    });
+
     client
       .mutate({
         mutation: gql`
@@ -52,7 +51,11 @@ export default function Register(props) {
               password: $password
               confirmPassword: $confirmPassword
             ) {
-              token
+              token,
+              user {
+                id,
+                name,
+              }
             }
           }
         `,
@@ -66,6 +69,7 @@ export default function Register(props) {
       .then(({ data }) => {
         setLoading(false);
         if (data.register.token) {
+          dispatch(login(data.login.user));
           localStorage.setItem("token", data.register.token);
           router.push("/");
         } else {
@@ -81,20 +85,13 @@ export default function Register(props) {
   return (
     <>
       {loading ? (
-        <div className="loading">
-          <div className="loading-spinner text-text-dark text-white py-6">
-            Loading ....
-          </div>
+        <div className="py-20">
+              <Alert type="info" message={"Loading ..."} />
         </div>
       ) : (
         <div className="py-20">
           {error && (
-            <div
-              className="w-full bg-red-800 p-4 rounded text-3xl"
-              role="alert"
-            >
-              {error}
-            </div>
+            <Alert type="danger" message={error} />
           )}
           <div className="info py-20 flex flex-col gap-10">
             <div className="flex flex-col gap-4">

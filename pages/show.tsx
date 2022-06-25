@@ -4,6 +4,10 @@ import { AiFillStar } from "react-icons/ai";
 import Slider from "../components/Slider";
 import CardSlider from "../components/CardSlider";
 import { useRouter } from "next/router";
+import client from "../apollo-client";
+import { gql } from "@apollo/client";
+import { addToast } from "../redux/toasted";
+import { useDispatch } from "react-redux";
 
 export const getServerSideProps = async (context) => {
   const { id } = context.query;
@@ -46,6 +50,51 @@ export default function Show(props) {
   const router = useRouter();
   const [rating] = React.useState<number>(Number(props.data.vote_average) / 2);
   let counter = 0;
+  const dispatch = useDispatch();
+  
+  const handleAddFavorite = async (e) => {
+    e.preventDefault();
+   
+    client
+      .mutate({
+        mutation: gql`
+          mutation addMovie($movieName: String!, $movieID: Int!) {
+            addMovie(movieName: $movieName, movieID: $movieID) {
+              favoriteMovies {
+                movieName
+                movieID
+              }
+            }
+          }
+        `,
+        variables: {
+          movieName: props.data.title,
+          movieID: props.data.id,
+          },
+        context : {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      }
+      })
+      .then(({ data }) => {
+        dispatch(addToast({
+          type: "success",
+          message: "Movie added to favorites",
+        }))
+
+      })
+      .catch((error) => {
+        dispatch(addToast({
+          type: "error",
+          message: error.message,
+        }))
+      });
+  };
+  
+  
+  
+  
   return (
     <div>
       <div className="relative h-[550px] my-8">
@@ -62,7 +111,7 @@ export default function Show(props) {
             />
           </div>
           <div className="z-[99]  w-full flex h-full flex-col justify-center p-10 gap-6">
-            <div className="text-9xl font-bold">{props.data.title}</div>
+            <div className="text-7xl lg:text-9xl font-bold">{props.data.title}</div>
             <div className="text-7xl font-bold ">
               {props.data.release_date.split("-")[0]}
             </div>
@@ -70,26 +119,26 @@ export default function Show(props) {
               {Array(Math.floor(rating))
                 .fill(0)
                 .map((_, i) => (
-                  <AiFillStar key={i} className="text-yellow-500" size={40} />
+                  <AiFillStar key={i} className="text-yellow-500" size={30} />
                 ))}
               {Array(5 - Math.floor(rating))
                 .fill(0)
                 .map((_, i) => (
-                  <AiFillStar key={i} size={40} />
+                  <AiFillStar key={i} size={30} />
                 ))}
             </div>
-            <div className="overview w-[50%] text-2xl">
+            <div className="overview w-[50%] text-lg lg:text-2xl">
               {props.data.overview.length > 200
                 ? props.data.overview.slice(0, 200) + "..."
                 : props.data.overview}
             </div>
             <div className="flex gap-6">
-              <button className="bg-primary-dark text-white font-bold py-5 px-12 rounded-full hover:button-secondary hover:opacity-75 ">
+              <button className="bg-secondary-dark text-white font-bold py-5 px-12 rounded-full hover:button-secondary hover:opacity-75 ">
                 Watch
               </button>
 
-              <button className="bg-primary-dark text-white font-bold py-5 px-12 rounded-full  hover:button-secondary hover:opacity-75">
-                Favorite
+              <button onClick={handleAddFavorite} className="bg-secondary-dark text-white font-bold py-5 px-12 rounded-full  hover:button-secondary hover:opacity-75">
+                Add To Favorite
               </button>
             </div>
           </div>
@@ -140,7 +189,8 @@ export default function Show(props) {
                       {cast.name}
                     </div>
                     <div className="cast-character text-sm  text-text-dark">
-                      {cast.character}
+                      {cast.character.split("/")[0]}
+
                     </div>
                   </div>
                 );

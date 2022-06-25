@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import "tailwindcss/tailwind.css";
+
 import Card from "../components/Card";
 import CardSlider from "../components/CardSlider";
-
 import Slider from "../components/Slider";
+import { useDispatch } from "react-redux";
+
+
+
 
 export const getServerSideProps = async () => {
   const res = await fetch(
@@ -28,6 +32,12 @@ export const getServerSideProps = async () => {
 const Home: NextPage<{ trendShows: any; page: any; recommended: any }> = (
   props
 ) => {
+  const dispatch = useDispatch();
+
+  
+
+
+
   return (
     <>
       <Head>
@@ -36,7 +46,8 @@ const Home: NextPage<{ trendShows: any; page: any; recommended: any }> = (
       </Head>
 
       <div className="trending py-20 text-5xl">
-        <h1>Trending</h1>
+        <h1 >Trending</h1>
+           
         <div className="overflow-hidden py-10">
           <div className="flex justify-between flex-wrap gap-y-16 ">
             <Slider>

@@ -1,6 +1,34 @@
 import Head from "next/head";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addToast } from "../redux/toasted";
 
 export const Layout = ({ children }) => {
+
+  
+  const toaster = useSelector((state: any) => state.toast);
+
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+
+
+    if(toaster.message){
+      toast(toaster.message, {
+        type: toaster.type,
+      });
+      dispatch(addToast({
+        type: "",
+        message: "",
+      }))
+    }
+    
+
+    
+  }, [toaster.message, toaster.type]);
+
   return (
     <div className="">
       <Head>

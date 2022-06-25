@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <div className="container flex  fixed top-4 left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-full">
+    <div className="opacity-0 lg:opacity-100 flex container   fixed top-4 left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-full">
       <div className="icon text-red-600 text-6xl">
         <Link href="/">
           <a>

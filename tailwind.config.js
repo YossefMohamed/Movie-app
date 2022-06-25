@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         "primary-dark": "rgba(0, 0, 0,0.95)",
         "primary-light": "#F2F2F2",
-        "secondary-dark": "rgba(20,20,20)",
+        "secondary-dark": "rgba(30,30,30)",
         "secondary-light": "#F2F2F2",
         "text-dark": "rgb(255 255 255 / 0.8)",
         "text-light": "rgb(0 0 0 / 0.8)",
