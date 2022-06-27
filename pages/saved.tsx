@@ -1,31 +1,84 @@
-import Head from "next/head";
 import React from "react";
-import SearchInput from "../components/SearchInput";
-import Card from "../components/Card";
 import { useRouter } from "next/router";
+import client from "../apollo-client";
+import { gql } from "@apollo/client";
 
-export default function Saved() {
-  const router = useRouter();
-  const { id } = router.query;
+import Card from "../components/Card";
+import { Pagination } from "../components/Pagination";
+import { useEffect } from "react";
+import { useState } from "react";
+import Alert from "../components/Alert";
+
+
+
+export default function Favorite(props) {
+  const [results , setResults] = useState([]);
+  const [loading , setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true)
+    client
+  .query({
+    query: gql`
+      query getSavedMovies{
+        getSavedMovies {
+    movieName
+    movieID
+    movieImage
+}
+      }
+    `,
+    context : {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+    }
+  }
+  })
+  .then(({ data }) => {
+    setResults(data.getSavedMovies)
+    
+    setLoading(false)
+
+  })
+  },[])
+  
   return (
     <div>
-      <div className="trending py-20 text-5xl">
-        <h1>Bookmarked Movies</h1>
-        <div className="flex flex-wrap py-10 gap-[2%]">
-          <div className="sm:w-[90%] md:w-[31%] w-[40%]">
-            <Card />
-          </div>
-          <div className="sm:w-[90%] md:w-[31%] w-[40%]">
-            <Card />
-          </div>
-          <div className="sm:w-[90%] md:w-[31%] w-[40%]">
-            <Card />
-          </div>
-          <div className="sm:w-[90%] md:w-[31%] w-[40%]">
-            <Card />
-          </div>
-        </div>
+      {
+        loading ?   <div className="py-20"><Alert type="info" message="Loading..."></Alert> </div>: results.length? (
+          <>
+          <div className="trending py-20 text-5xl">
+        <h1>
+          There're {results.length} Movies in Your Favorites : 
+        </h1>
       </div>
+      <div className="flex flex-wrap gap-[2%] justify-start flex-row ">
+        {/* {image : string; name : string ; lang:string ; date : string ; id:number } */}
+        {results.map((item) => {
+          return (
+          <div className="sm:w-[90%] md:w-[31%] w-[40%] my-10" key={item.id}>
+            <Card
+              image={item.movieImage}
+              name={item.movieName}
+              date={"2022"}
+              lang={"EN"}
+              id={item.movieID}
+            />
+          </div>
+        )})}
+      </div>
+      <div className="pagination  w-full">
+        <Pagination />
+      </div>
+          </>
+        ) : <>
+          <div className="trending py-20 text-5xl">
+
+        <h1>
+         You Have No Favorite Movies
+        </h1>
+        </div>
+        </>
+      }
     </div>
   );
 }

@@ -9,13 +9,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toastedSlice } from "../redux/toasted";
+import Alert from "../components/Alert";
 
 
 
 export default function Favorite(props) {
   const router = useRouter();
-  const [results , setResults] = useState([])
+  const [results , setResults] = useState([]);
+  const [loading , setLoading] = useState(false)
   useEffect(() => {
+    setLoading(true)
     client
   .query({
     query: gql`
@@ -35,14 +38,15 @@ export default function Favorite(props) {
   })
   .then(({ data }) => {
     setResults(data.getFavoriteMovies)
+    setLoading(false)
+
   })
   },[])
-  const { keyword: id } = router.query;
   
   return (
     <div>
       {
-        results.length? (
+        loading ?   <div className="py-20"><Alert type="info" message="Loading..."></Alert> </div>: results.length? (
           <>
           <div className="trending py-20 text-5xl">
         <h1>
