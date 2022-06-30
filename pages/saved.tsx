@@ -48,7 +48,7 @@ export default function Favorite(props) {
           <>
           <div className="trending py-20 text-5xl">
         <h1>
-          There're {results.length} Movies in Your Favorites : 
+          There're {results.length} Movies in Your Saved List : 
         </h1>
       </div>
       <div className="flex flex-wrap gap-[2%] justify-start flex-row ">
@@ -66,9 +66,9 @@ export default function Favorite(props) {
           </div>
         )})}
       </div>
-      <div className="pagination  w-full">
+      {/* <div className="pagination  w-full">
         <Pagination />
-      </div>
+      </div> */}
           </>
         ) : <>
           <div className="trending py-20 text-5xl">

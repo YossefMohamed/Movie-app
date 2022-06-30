@@ -68,9 +68,9 @@ export default function Favorite(props) {
           </div>
         )})}
       </div>
-      <div className="pagination  w-full">
+      {/* <div className="pagination  w-full">
         <Pagination />
-      </div>
+      </div> */}
           </>
         ) : <>
           <div className="trending py-20 text-5xl">

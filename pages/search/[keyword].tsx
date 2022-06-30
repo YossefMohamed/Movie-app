@@ -47,9 +47,9 @@ export default function Search(props) {
           </div>
         ))}
       </div>
-      <div className="pagination  w-full">
+      {/* <div className="pagination  w-full">
         <Pagination />
-      </div>
+      </div> */}
     </div>
   );
 }

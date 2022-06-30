@@ -46,6 +46,10 @@ export default function Login(props) {
                   movieID
                   movieName
                 }
+                savedMovies{
+                  movieID
+                  movieName
+                }
                 id
                 name
                 email

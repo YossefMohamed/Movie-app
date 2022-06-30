@@ -1,14 +1,19 @@
+import { NextPage } from "next";
+import Link from "next/link";
 import React from "react";
 
-export const Pagination = () => {
+export const Pagination : NextPage<{ onClick: any; next: any ; prev:any ;currentPage :any}>  = (props) => {
   return (
     <div className="m-auto">
       <nav
         className="relative z-0  rounded-md shadow-sm   w-full flex justify-center"
         aria-label="Pagination"
       >
-        <a
-          href="#"
+       {props.prev() && 
+      (        <Link href={`/${props.prev()}`}>
+
+<a
+          href={`/${props.prev()}`}
           className="relative flex items-center px-2 py-2 rounded-l-md border border-secondary-dark bg-primary-dark text-sm font-medium text-gray-500 hover:opacity-75"
         >
           <span className="sr-only">Previous</span>
@@ -26,41 +31,50 @@ export const Pagination = () => {
             />
           </svg>
         </a>
+
+        </Link>
+      )}
+        {props.prev() && 
+         (        <Link href={`/${props.prev()}`}>
         <a
           href="#"
           aria-current="page"
+          className="bg-primary-dark border-secondary-dark text-gray-500 hover:opacity-75 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+        >
+                    {props.prev()}
+
+        </a>
+        
+        </Link>)}
+        <a
           className="z-10 border-secondary-dark border-white-500 text-white-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
         >
-          {" "}
-          1{" "}
-        </a>
-        <a
-          href="#"
-          className="bg-primary-dark border-secondary-dark text-gray-500 hover:opacity-75 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-        >
-          {" "}
-          2{" "}
-        </a>
-        <a
-          href="#"
-          className="bg-primary-dark border-secondary-dark text-gray-500 hover:opacity-75 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-        >
-          {" "}
-          3{" "}
-        </a>
+                   {props.currentPage}
 
-        <a
+        </a>
+        
+
+     {props.next() &&   
+     
+     (
+      <Link href={`/${props.next()}`}>
+     <a
           href="#"
           className="bg-primary-dark border-secondary-dark text-gray-500 hover:opacity-75 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
         >
-          {" "}
-          3{" "}
+          {props.next()}
         </a>
-        <a
+        
+        </Link>
+        )}
+
+       {props.next() && (
+        <Link href={`/${props.next()}`}>
+       <a
           href="#"
           className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-secondary-dark bg-primary-dark text-sm font-medium text-gray-500 hover:opacity-75"
         >
-          <span className="sr-only">Next</span>
+          <span className="sr-only">{props.next()}</span>
           <svg
             className="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
@@ -71,10 +85,12 @@ export const Pagination = () => {
             <path
               fill-rule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </a>
+        
+        </Link>)}
       </nav>
     </div>
   );

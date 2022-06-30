@@ -57,6 +57,10 @@ export default function Register(props) {
                   movieID
                   movieName
                 }
+                savedMovies{
+                  movieID
+                  movieName
+                }
                 id
                 name
                 email

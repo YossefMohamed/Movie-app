@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { toInteger } from "lodash";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";

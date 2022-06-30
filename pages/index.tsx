@@ -5,7 +5,8 @@ import "tailwindcss/tailwind.css";
 import Card from "../components/Card";
 import CardSlider from "../components/CardSlider";
 import Slider from "../components/Slider";
-import { useDispatch } from "react-redux";
+import { Pagination } from "../components/Pagination";
+import { useRouter } from "next/router";
 
 
 
@@ -15,7 +16,6 @@ export const getServerSideProps = async () => {
     `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1`
   );
   const data: any = await res.json();
-
   const resRecommend = await fetch(
     `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}&language=en-US&page=1`
   );
@@ -29,15 +29,11 @@ export const getServerSideProps = async () => {
   };
 };
 
-const Home: NextPage<{ trendShows: any; page: any; recommended: any }> = (
+const Home: NextPage<{ trendShows: any; pages: any; recommended: any }> = (
   props
 ) => {
-  const dispatch = useDispatch();
-
-  
-
-
-
+const router = useRouter()
+const currentPage =1
   return (
     <>
       <Head>
@@ -87,7 +83,20 @@ const Home: NextPage<{ trendShows: any; page: any; recommended: any }> = (
             </div>
           </div>
         </div>
-      </div>
+        <Pagination onClick={(page) => router.push('/'+page)} currentPage={currentPage} next={() => {
+          if(currentPage < props.pages){
+            return currentPage+1
+          }else{
+           return undefined
+          }}}
+          prev={() => {
+            if(currentPage !== 1){
+                return currentPage-1
+            }else{
+              return undefined
+            }
+          }}
+          />      </div>
     </>
   );
 };
