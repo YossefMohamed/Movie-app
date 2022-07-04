@@ -14,31 +14,34 @@ import Alert from "../components/Alert";
 export default function Favorite(props) {
   const [results , setResults] = useState([]);
   const [loading , setLoading] = useState(false);
+  const getSaved = () => {
+    client
+    .query({
+      query: gql`
+        query getSavedMovies{
+          getSavedMovies {
+      movieName
+      movieID
+      movieImage
+  }
+        }
+      `,
+      context : {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    }
+    })
+    .then(({ data }) => {
+      setResults(data.getSavedMovies)
+      setLoading(false)
+  
+    })
+  }
   useEffect(() => {
     setLoading(true)
-    client
-  .query({
-    query: gql`
-      query getSavedMovies{
-        getSavedMovies {
-    movieName
-    movieID
-    movieImage
-}
-      }
-    `,
-    context : {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
-    }
-  }
-  })
-  .then(({ data }) => {
-    setResults(data.getSavedMovies)
-    
-    setLoading(false)
-
-  })
+      getSaved()
+  
   },[])
   
   return (
@@ -74,7 +77,7 @@ export default function Favorite(props) {
           <div className="trending py-20 text-5xl">
 
         <h1>
-         You Have No Favorite Movies
+         You Have No Saved Movies
         </h1>
         </div>
         </>

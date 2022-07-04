@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { AiFillStar } from "react-icons/ai";
 import Slider from "../components/Slider";
@@ -10,6 +10,11 @@ import { addToast } from "../redux/toasted";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { login } from "../redux/user";
+import { useState } from "react";
+import Alert from "../components/Alert";
+import moment from 'moment';
+
+
 
 export const getServerSideProps = async (context) => {
   const { id } = context.query;
@@ -51,10 +56,14 @@ export const getServerSideProps = async (context) => {
 export default function Show(props) {
   const router = useRouter();
   const [rating] = React.useState<number>(Number(props.data.vote_average) / 2);
+  const [comments , setComments] = useState([])
+  const [content ,setContent] = useState("")
+  const [loading , setLoading] = useState(false)
   const {favoriteMovies} = useSelector((state :any) => state.user.user)
   let counter = 0;
   const dispatch = useDispatch();
   
+
   const handleAddFavorite = async (e) => {
     e.preventDefault();
     client
@@ -150,7 +159,106 @@ export default function Show(props) {
         }))
       });
   }
+  const getComments = () => {
+    client
+    .mutate({
+      mutation: gql`
+      query GetMovieComments($movie: Int!) {
+        getMovieComments(movie: $movie) {
+          content
+          user {
+            id
+            name
+            image
+          }
+          movie
+          createdAt
+        }
+      }
+      `,
+      variables: {
+        movie: props.data.id,
+        }
+    })
+    .then(({ data }) => {
+      setLoading(false)
   
+      setComments(data.getMovieComments)
+    })
+    .catch((error) => {
+      dispatch(addToast({
+        type: "error",
+        message: error.message,
+      }))
+  setLoading(false)
+
+    });
+  }
+useEffect(() => {
+  setLoading(true)
+  getComments()
+
+}, [])
+
+
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if(!content)
+     return dispatch(addToast({
+        type: "error",
+        message: "Add Content To Your Comment",
+      }))
+    setLoading(true)
+    client
+      .mutate({
+        mutation: gql`
+        mutation Mutation($movie: Int!, $content: String!) {
+          addComment(movie: $movie, content: $content) {
+            content
+            user {
+              id
+              name
+              email
+              image
+              updatedAt
+              verified
+              createdAt
+            }
+            movie
+          }
+        }
+        `,
+        variables: {
+          movie: props.data.id,
+          content : content
+          },
+        context : {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      }
+      })
+      .then(() => {
+        dispatch(addToast({
+          type: "success",
+          message: "Your Comment Has Been Added",
+        }))
+        getComments()
+        setContent("")
+        setLoading(false)
+
+      })
+      .catch((error) => {
+        dispatch(addToast({
+          type: "error",
+          message: error.message,
+        }))
+        setLoading(false)
+
+      });
+
+  };
   
   
   return (
@@ -326,7 +434,11 @@ export default function Show(props) {
         </div>
       </div>
       <div className="comment-section my-[50px]">
-        <div className="new my-[50px]">
+       {
+         loading ? <Alert type="info" message="Loading..." 
+         /> : 
+         <>
+          <div className="new my-[50px]">
           <div className="rounded-lg">
             <form action="" className="w-full p-4 py-10">
               <div className="mb-2">
@@ -337,35 +449,52 @@ export default function Show(props) {
                   className="w-full h-[100px] p-4   outline-none  my-5 bg-primary-dark text-text-dark rounded-xl "
                   name="comment"
                   placeholder="Add your comment"
+                  onChange={e => setContent(e.target.value)}
+                  value={content}
                 ></textarea>
               </div>
               <div>
-                <button className="px-10 py-5  text-blue-100 bg-primary-dark rounded">
+                <button className="px-10 py-5  text-blue-100 bg-primary-dark rounded" onClick={handleAddComment}>
                   Comment
                 </button>
-                <button className="px-10 py-5 mx-6  rounded">Cancel</button>
+                <button className="px-10 py-5 mx-6  rounded" onClick={(e) =>{e.preventDefault();setContent("")}}>Cancel</button>
               </div>
             </form>
           </div>
         </div>
-        <div className="text-4xl mb-[50px] font-bold uppercase">Comments</div>
-        <div className="comment-list flex flex-wrap gap-6  p-5 rounded-xl">
-          <div className="comment-avatar bg-red-50 w-20 h-20 rounded-full overflow-hidden">
+        <div className="text-4xl my-[50px] font-bold uppercase">{comments.length} Comments</div>
+          {
+            comments.map(comment => {
+              return (
+                <div className="comment-list flex flex-wrap gap-6  my-10 p-10 rounded-xl bg-secondary-dark">
+                <div className="comment-avatar bg-red-50 w-20 h-20 rounded-full overflow-hidden">
             <img
-              src={`https://avatars.githubusercontent.com/u/13303306?s=120&v=4`}
+              src={`https://avatars.dicebear.com/api/big-ears-neutral/${comment.user.id}.svg`}
               alt=""
               className="avatar"
             />
           </div>
           <div className="comment-content flex justify-between  flex-1 flex-col">
             <div className="comment-name text-xl font-bold text-text-dark">
-              Yossef Mohamed - 5 min ago
+            {comment.user.name} - {moment(Number(comment.createdAt)).format("MM-DD-YYYY")}
             </div>
             <div className="comment-text text-2xl text-text-dark">
-              Great Film !! I
+              {comment.content}
             </div>
           </div>
-        </div>
+          </div>
+              )
+            })
+          }
+          {
+            !comments.length&& (
+              <div className="comment-list flex flex-wrap gap-6  my-10 p-10 rounded-xl bg-secondary-dark">
+                  There are no comments
+                </div>
+            )
+          }
+        </>
+       }
       </div>
     </div>
   );

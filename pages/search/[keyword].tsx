@@ -9,9 +9,6 @@ export const getServerSideProps = async (context) => {
   const res = await fetch(
     `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-U&query=${id}&page=1&include_adult=false`
   );
-  console.log(
-    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-U&query=${id}&page=1&include_adult=true`
-  );
   const data: any = await res.json();
   return {
     props: {
