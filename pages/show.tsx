@@ -12,7 +12,8 @@ import { useSelector } from "react-redux";
 import { login } from "../redux/user";
 import { useState } from "react";
 import Alert from "../components/Alert";
-import moment from 'moment';
+import { addImage } from "../redux/image";
+import Comment from "../components/Comment";
 
 
 
@@ -60,6 +61,8 @@ export default function Show(props) {
   const [content ,setContent] = useState("")
   const [loading , setLoading] = useState(false)
   const {favoriteMovies} = useSelector((state :any) => state.user.user)
+  const image = useSelector((state :any) => state.image)
+  console.log(image)
   let counter = 0;
   const dispatch = useDispatch();
   
@@ -79,6 +82,11 @@ export default function Show(props) {
     verified
     createdAt
     favoriteMovies {
+      movieName
+      movieID
+      movieImage
+    }
+    savedMovies{
       movieName
       movieID
       movieImage
@@ -128,6 +136,11 @@ export default function Show(props) {
     verified
     createdAt
     favoriteMovies {
+      movieName
+      movieID
+      movieImage
+    }
+    savedMovies{
       movieName
       movieID
       movieImage
@@ -262,7 +275,28 @@ useEffect(() => {
   
   
   return (
-    <div>
+    <div >
+{image.status &&  <div className="fixed bg-white z-50 h-4/5	w-4/5   m-auto left-0 right-0" 
+onClick={
+      ()=> {
+        dispatch(addImage({
+          image : image.image,
+          status:false
+        }))
+      }
+    }
+    >
+ <Image
+          src={"https://image.tmdb.org/t/p/w500/" + image.image}
+          layout="fill"
+          objectFit="cover"
+          
+        />
+
+
+
+</div>}
+   
       <div className="relative h-[550px] my-8">
         <div className="w-full z-[10] absolute top-0 left-0  rounded-2xl overflow-hidden h-full ">
           <div className="  h-full w-full z-[-1]  overflow-hidden absolute inset-0 bg-primary-dark brightness-50">
@@ -466,23 +500,7 @@ useEffect(() => {
           {
             comments.map(comment => {
               return (
-                <div className="comment-list flex flex-wrap gap-6  my-10 p-10 rounded-xl bg-secondary-dark">
-                <div className="comment-avatar bg-red-50 w-20 h-20 rounded-full overflow-hidden">
-            <img
-              src={`https://avatars.dicebear.com/api/big-ears-neutral/${comment.user.id}.svg`}
-              alt=""
-              className="avatar"
-            />
-          </div>
-          <div className="comment-content flex justify-between  flex-1 flex-col">
-            <div className="comment-name text-xl font-bold text-text-dark">
-            {comment.user.name} - {moment(Number(comment.createdAt)).format("MM-DD-YYYY")}
-            </div>
-            <div className="comment-text text-2xl text-text-dark">
-              {comment.content}
-            </div>
-          </div>
-          </div>
+                <Comment comment={comment} />
               )
             })
           }

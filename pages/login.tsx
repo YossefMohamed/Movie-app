@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Alert from "../components/Alert";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/user";
+import Link from "next/link";
 
 export default function Login(props) {
   const [email, setEmail] = React.useState("");
@@ -116,10 +117,19 @@ export default function Login(props) {
         focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
             placeholder="Your Password"
           />
-        </div>{" "}
+        </div>
+        <div className="w-fit">
+       <Link href="/register">
+          <a>
+            Have An Account?
+          </a>
+
+        </Link>
+       </div>
         <button onClick={handleSubmit} className="btn w-fit bg-secondary-dark px-16 py-5 font-bold text-3xl hover:bg-button-primary hover:text-text-dark outline-none " disabled={loading||!email ||!password}>
           Submit
         </button>
+     
       </div>
     </div>
   );
