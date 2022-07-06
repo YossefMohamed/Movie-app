@@ -14,6 +14,7 @@ import { useState } from "react";
 import Alert from "../components/Alert";
 import { addImage } from "../redux/image";
 import Comment from "../components/Comment";
+import Head from "next/head";
 
 
 
@@ -275,7 +276,12 @@ useEffect(() => {
   
   
   return (
-    <div >
+   <>
+   <Head>
+   <title>{props.data.title} || {props.data.release_date}</title>
+   </Head>
+   <div>
+     
 {image.status &&  <div className="fixed bg-white z-50 h-4/5	w-4/5   m-auto left-0 right-0" 
 onClick={
       ()=> {
@@ -316,12 +322,12 @@ onClick={
               {props.data.release_date.split("-")[0]}
             </div>
             <div className="rating flex gap-4">
-              {Array(Math.floor(rating))
+              {Array(Math.ceil(rating))
                 .fill(0)
                 .map((_, i) => (
                   <AiFillStar key={i} className="text-yellow-500" size={30} />
                 ))}
-              {Array(5 - Math.floor(rating))
+              {Array(5 - Math.ceil(rating))
                 .fill(0)
                 .map((_, i) => (
                   <AiFillStar key={i} size={30} />
@@ -515,5 +521,6 @@ onClick={
        }
       </div>
     </div>
+   </>
   );
 }

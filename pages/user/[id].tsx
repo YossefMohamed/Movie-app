@@ -66,6 +66,15 @@ export default function User(props) {
               />
             </div>
             <div className="name text-center  my-16">{props.data.name.toUpperCase()}</div>
+            <div className="flex gap-6 justify-center my-12">
+              <button className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded-full hover:button-secondary hover:opacity-75 ">
+                Block
+              </button>
+              <button className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded-full  hover:button-secondary hover:opacity-75">
+                Follow
+              </button >
+             
+            </div>
           </div>
           <div className="text-6xl font-bold">Favorite Movies:</div>
           <div className="flex flex-wrap gap-[2%]">

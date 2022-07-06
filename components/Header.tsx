@@ -1,10 +1,12 @@
 import React from "react";
 import { BsFillBookmarkFill } from "react-icons/bs";
-import { RiRemoteControl2Fill, RiVipCrownFill } from "react-icons/ri";
+import {  RiVipCrownFill , RiLoginCircleFill } from "react-icons/ri";
 import { IoAlbums, IoMoon } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { MdFavorite } from "react-icons/md";
+import { FaHandHoldingHeart } from "react-icons/fa";
 
 export default function Header() {
 
@@ -20,16 +22,16 @@ export default function Header() {
         </Link>
       </div>
       <div className="links text-text-dark text-6xl mt-10">
-        <Link href="/favorites">
+        <Link href="/shows">
           <a>
             <IoAlbums />
           </a>
         </Link>
       </div>
       <div className="links text-text-dark text-6xl mt-10">
-        <Link href="/shows">
+        <Link href="/favorites">
           <a>
-            <RiRemoteControl2Fill />
+            <MdFavorite/>
           </a>
         </Link>
       </div>
@@ -47,6 +49,25 @@ export default function Header() {
           </a>
         </Link>
       </div>
+
+      <div className="links text-text-dark text-6xl mt-10">
+        <Link href="/support-center">
+          <a>
+            <FaHandHoldingHeart />
+          </a>
+        </Link>
+      </div>
+      
+      
+      <div className="links text-text-dark text-6xl mt-10">
+        <Link href="/login">
+          <a>
+            <RiLoginCircleFill />
+          </a>
+        </Link>
+      </div>
+
+
       <div className="links text-text-dark text-6xl mt-auto">
         <div>
           <Link href="/me">

@@ -6,7 +6,7 @@ export const Pagination : NextPage<{ onClick: any; next: any ; prev:any ;current
   
   const next = props.next()
   const prev = props.prev()
-  console.log(props.onClick)
+
   return (
     <div className="m-auto">
       <nav
