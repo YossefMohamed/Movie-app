@@ -58,6 +58,7 @@ export default function Login(props) {
                 updatedAt
                 verified
                 createdAt
+                following
               }}
           }
         `,

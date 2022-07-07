@@ -42,6 +42,7 @@ const Card: NextPage<{
     image
     updatedAt
     verified
+    following
     createdAt
     favoriteMovies {
       movieName
@@ -104,6 +105,7 @@ const Card: NextPage<{
   updatedAt
   verified
   createdAt
+  following
   favoriteMovies {
     movieName
     movieID

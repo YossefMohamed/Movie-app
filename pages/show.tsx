@@ -82,6 +82,7 @@ export default function Show(props) {
     updatedAt
     verified
     createdAt
+    following
     favoriteMovies {
       movieName
       movieID
@@ -136,6 +137,7 @@ export default function Show(props) {
     updatedAt
     verified
     createdAt
+    following
     favoriteMovies {
       movieName
       movieID

@@ -1,10 +1,10 @@
 import React from 'react'
 
-function Tag() {
+function Tag(props) {
   return (
-    <span className="inline-flex items-center m-1 px-5 py-1 cursor-pointer bg-gray-800 rounded-full text-lg font-semibold text-text-dark">
+    <span className="inline-flex items-center m-1 px-6 py-2 cursor-pointer bg-secondary-dark rounded-full text-lg font-semibold text-text-dark">
       <span className="ml-1">
-      CRIME
+      {props.name}
       </span>
       </span>
   )

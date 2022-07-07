@@ -52,6 +52,7 @@ export default function ME(props) {
       updatedAt
       verified
       createdAt
+      following
       savedMovies {
         movieName
         movieID

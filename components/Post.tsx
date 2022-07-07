@@ -10,14 +10,14 @@ function Post() {
       <div className="flex">
         <a className="inline-block mr-4" href="#">
           <img
-            className="rounded-full max-w-none w-14 h-14"
+            className="rounded-full max-w-none w-20 h-20"
             src="https://randomuser.me/api/portraits/men/35.jpg"
           />
         </a>
         <div className="flex flex-col justify-center">
           <div>
             <a
-              className="inline-block text-xl font-bold dark:text-white"
+              className="inline-block text-2xl font-bold dark:text-white"
               href="#"
             >
               Wade Warren
@@ -29,49 +29,9 @@ function Post() {
         </div>
       </div>
     </div>
-    <p className="text-2xl font-extrabold dark:text-white">
+    <p className="text-3xl font-extrabold dark:text-white my-6">
       Web Design templates Selection
-    </p>
-    <div className="py-4 image-section">
-
-      <div className="flex justify-between gap-1 mb-1">
-        <a className="flex" href="#">
-          <img
-            className="max-w-full rounded-tl-lg"
-            src="https://images.pexels.com/photos/92866/pexels-photo-92866.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-        </a>
-        <a className="flex" href="#">
-          <img
-            className="max-w-full"
-            src="https://images.pexels.com/photos/247929/pexels-photo-247929.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-        </a>
-        <a className="flex" href="#">
-          <img
-            className="max-w-full rounded-tr-lg"
-            src="https://images.pexels.com/photos/631522/pexels-photo-631522.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-        </a>
-      </div>
-
-
-      <div className="flex justify-between gap-1">
-        <a className="flex" href="#">
-          <img
-            className="max-w-full rounded-bl-lg"
-            src="https://images.pexels.com/photos/1429748/pexels-photo-1429748.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-        </a>
-        <a className="flex" href="#">
-          <img
-            className="max-w-full rounded-br-lg"
-            src="https://images.pexels.com/photos/69020/pexels-photo-69020.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-        </a>
-      </div>
-    </div>
-    <p className="text-2xl font-extrabold dark:text-white">
+  
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua.
     </p>

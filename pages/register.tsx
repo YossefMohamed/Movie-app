@@ -68,6 +68,7 @@ export default function Register(props) {
                 updatedAt
                 verified
                 createdAt
+                following
             }
           }
         `,

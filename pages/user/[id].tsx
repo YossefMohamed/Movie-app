@@ -3,11 +3,13 @@ import Card from "../../components/Card";
 import Image from "next/image";
 import { gql } from "@apollo/client";
 import client from "../../apollo-client";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/user";
 
 export const getServerSideProps = async (context) => {
  try {
     const { id } = context.query;
-    let userData;
 
     const { data } = await client
     .query({
@@ -21,6 +23,7 @@ export const getServerSideProps = async (context) => {
     updatedAt
     verified
     createdAt
+    following
     favoriteMovies {
       movieName
       movieID
@@ -33,7 +36,7 @@ export const getServerSideProps = async (context) => {
         getUserId : id
       }
     })
-
+    console.log(data.getUser)
     return {
         props: {
           data:data.getUser,
@@ -51,6 +54,92 @@ export const getServerSideProps = async (context) => {
   
 };
 export default function User(props) {
+    const [userData , setUserData] = useState(props.data)
+    const user = useSelector((state:any) => state.user.user)
+  const dispatch = useDispatch();
+
+    const followUser = async (e) => {
+        const { data } = await client
+    .mutate({
+      mutation: gql`
+        mutation Mutation($followingId: String!) {
+  followUser(followingId: $followingId) {
+    id
+    name
+    email
+    image
+    updatedAt
+    verified
+    createdAt
+    favoriteMovies {
+      movieName
+      movieID
+      movieImage
+    }
+    savedMovies {
+      movieName
+      movieID
+      movieImage
+    }
+    following
+    deleted
+  }
+}
+      `,
+      variables :{
+        followingId : userData.id
+      },
+      context : {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+      }}
+    })
+    
+    dispatch(login(data.followUser))
+    }
+
+
+
+    const unFollowUser = async (e) => {
+        const { data } = await client
+    .mutate({
+      mutation: gql`
+         mutation UnFollowUser($followingId: String!) {
+        unFollowUser(followingId: $followingId) {
+          id
+          name
+          email
+          image
+          updatedAt
+          verified
+          createdAt
+          favoriteMovies {
+            movieName
+            movieID
+            movieImage
+          }
+          savedMovies {
+            movieName
+            movieID
+            movieImage
+          }
+          deleted
+          following
+        }
+      }
+      `,
+      variables :{
+        followingId : userData.id
+      },
+      context : {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+      }}
+    })
+    dispatch(login(data.unFollowUser))
+
+    }
+  
   return (
     <div>
       <div className="trending py-20 text-5xl">
@@ -59,27 +148,32 @@ export default function User(props) {
           <div className="title">
             <div className=" flex justify-center rounded-3xl overflow-hidden w-fit m-auto">
               <Image
-                src={`https://avatars.dicebear.com/api/big-ears-neutral/${props.data.id}.svg`}
+                src={`https://avatars.dicebear.com/api/big-ears-neutral/${userData.id}.svg`}
                 width={250}
                 height={300}
                 objectFit="cover"
               />
             </div>
-            <div className="name text-center  my-16">{props.data.name.toUpperCase()}</div>
+            <div className="name text-center  my-16">{userData.name.toUpperCase()}</div>
             <div className="flex gap-6 justify-center my-12">
-              <button className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded-full hover:button-secondary hover:opacity-75 ">
+              <button  className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:opacity-75 ">
                 Block
+                
               </button>
-              <button className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded-full  hover:button-secondary hover:opacity-75">
+             {user.id?!user.following.includes(userData.id)? <button onClick={followUser} className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
                 Follow
-              </button >
-             
+              </button > : <button onClick={unFollowUser} className="bg-red-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
+                Unfollow
+              </button > : <button onClick={followUser} className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
+                Follow
+              </button > 
+             }
             </div>
           </div>
           <div className="text-6xl font-bold">Favorite Movies:</div>
           <div className="flex flex-wrap gap-[2%]">
-            {props.data.favoriteMovies.length &&
-              props.data.favoriteMovies.map((item, idx) => {
+            {userData.favoriteMovies.length &&
+              userData.favoriteMovies.map((item, idx) => {
                 if (idx < 20) {
                   return (
                     <div
