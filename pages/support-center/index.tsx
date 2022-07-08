@@ -60,6 +60,8 @@ export default function SupportPage() {
                   email
                   image
                 }
+                id
+                likes
                 content
                 createdAt
               }

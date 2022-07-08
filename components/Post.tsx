@@ -47,6 +47,8 @@ function Post(props) {
             tag
             comments {
               post
+              likes
+              id
               user {
                 id
                 name
@@ -91,6 +93,8 @@ function Post(props) {
             tag
             comments {
               post
+              likes
+              id
               user {
                 id
                 name
@@ -134,6 +138,8 @@ function Post(props) {
             tag
             comments {
               post
+              likes
+              id
               user {
                 id
                 name
