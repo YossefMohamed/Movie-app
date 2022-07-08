@@ -1,24 +1,22 @@
-import React from 'react'
+import React from "react";
 
-function PostComment() {
+function PostComment({ comment }) {
   return (
-<div className="media flex pb-4">
+    <div className="media flex pb-4">
       <a className="inline-block mr-4 mt-1" href="#">
         <img
           className="rounded-full max-w-none w-12 h-12"
-          src="https://randomuser.me/api/portraits/women/76.jpg"
+          src={`https://avatars.dicebear.com/api/big-ears-neutral/${comment.user.id}.svg`}
         />
       </a>
       <div className="media-body">
-      <div>
+        <div>
           <a className="inline-block text-xl font-bold mr-2" href="#">
-            Leslie Alexander
+            {comment.user.name}
           </a>
-          <span className="text-slate-500 text-lg">
-            25 minutes ago
-          </span>
+          <span className="text-slate-500 text-lg">25 minutes ago</span>
         </div>
-        <p>Dolor sit ameteiusmod consectetur adipiscing elit.</p>
+        <p>{comment.content}</p>
         <div className="mt-2 flex items-center">
           <a className="inline-flex items-center py-2 mr-3" href="#">
             <span className="mr-2">
@@ -32,10 +30,10 @@ function PostComment() {
             </span>
             <span className="text-base font-bold">0</span>
           </a>
-          
         </div>
       </div>
-    </div>  )
+    </div>
+  );
 }
 
-export default PostComment
+export default PostComment;
