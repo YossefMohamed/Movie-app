@@ -15,28 +15,27 @@ const CardSlider: NextPage<{
 }> = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log(props)
   return (
-    <div className="p-5 w-full h-[25rem] font-poppins cursor-pointer text-text-dark rounded-2xl opacity-80 hover:opacity-100 overflow-hidden relative"
-    
-    onClick={() => {
-      if (props.show) {
-        dispatch(addImage({
-          image : "https://image.tmdb.org/t/p/w500/" + props.image,
-          status : true
-        }))
-      }else{
-        !props.show && router.push(`/show?id=${props.id}`);
-      }
-    }}
-    
+    <div
+      className="p-5 w-full h-[25rem] font-poppins cursor-pointer text-text-dark rounded-2xl opacity-80 hover:opacity-100 overflow-hidden relative"
+      onClick={() => {
+        if (props.show) {
+          dispatch(
+            addImage({
+              image: "https://image.tmdb.org/t/p/w500/" + props.image,
+              status: true,
+            })
+          );
+        } else {
+          !props.show && router.push(`/show?id=${props.id}`);
+        }
+      }}
     >
       <div className="absolute top-0 left-0 bg-red-100 w-full h-full z-0 ">
         <Image
           src={"https://image.tmdb.org/t/p/w500/" + props.image}
           layout="fill"
           objectFit="cover"
-          
         />
       </div>
       <div className="absolute right-5 top-5 p-5 hover:bg-secondary-dark text-4xl rounded-full">

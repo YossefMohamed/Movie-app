@@ -5,30 +5,27 @@ import { useSelector } from "react-redux";
 import client from "../apollo-client";
 import PostComment from "./PostComment";
 import Tag from "./Tag";
-
-// {
-//   post: {
-//     id: String;
-//     content: String;
-//     user: {
-//       id: String;
-//       name: String;
-//       email: String;
-//       image: String;
-//     };
-//     createdAt: String;
-//     updatedAt: String;
-//     tag: [String];
-//   };
-// }
+import { useDispatch } from "react-redux";
+import { addToast } from "../redux/toasted";
+import { useRouter } from "next/router";
 
 function Post(props) {
   const [post, setPost] = useState(props.post);
+  const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const { user } = useSelector((state: any) => state.user);
-
+  const router = useRouter();
   const onAddComment = async () => {
     if (!comment) return;
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     const { data } = await client.mutate({
       mutation: gql`
         mutation AddCommentToPost($postId: String!, $content: String!) {
@@ -75,6 +72,15 @@ function Post(props) {
     setComment("");
   };
   const onLikePost = async () => {
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     const { data } = await client.mutate({
       mutation: gql`
         mutation Mutation($postId: String!) {
@@ -120,6 +126,15 @@ function Post(props) {
   };
 
   const onUnLikePost = async () => {
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     const { data } = await client.mutate({
       mutation: gql`
         mutation Mutation($postId: String!) {
@@ -179,7 +194,7 @@ function Post(props) {
                 className="inline-block text-2xl font-bold dark:text-white"
                 href="#"
               >
-                {post.user.name.toUpperCase()}
+                Grab Mohamed
               </a>
             </div>
             <div className="text-slate-500  text-lg dark:text-slate-400">
@@ -194,7 +209,12 @@ function Post(props) {
 
       <div className="flex my-4">
         {post.tag.map((tag) => (
-          <Tag key={tag} name={tag} />
+          <span
+            key={tag}
+            onClick={() => router.push("/support-center?tag=" + tag)}
+          >
+            <Tag name={tag} />
+          </span>
         ))}
       </div>
 

@@ -5,9 +5,7 @@ import client from "../apollo-client";
 import { useRouter } from "next/router";
 import Alert from "../components/Alert";
 import { login } from "../redux/user";
-import { useDispatch } from "react-redux";
-
-export default function Register(props) {
+import { useDispatch , useSelector } from "react-redux";
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -15,6 +13,7 @@ export default function Register(props) {
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
+  const {user } = useSelector((state:any) => state.user);
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,18 +93,18 @@ export default function Register(props) {
         setError(error.message);
       });
   };
-
+  React.useEffect(() => {
+    user.id ? router.push("/") : null;
+  }, [user]);
   return (
     <>
       {loading ? (
         <div className="py-20">
-              <Alert type="info" message={"Loading ..."} />
+          <Alert type="info" message={"Loading ..."} />
         </div>
       ) : (
         <div className="py-20">
-          {error && (
-            <Alert type="danger" message={error} />
-          )}
+          {error && <Alert type="danger" message={error} />}
           <div className="info py-20 flex flex-col gap-10">
             <div className="flex flex-col gap-4">
               <div className="name text-3xl font-bold">Name</div>

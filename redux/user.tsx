@@ -1,27 +1,39 @@
-import {  createSlice } from "@reduxjs/toolkit";
-
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any = {
-    user : {
-      favoriteMovies : []
-    },
+  user: {
+    favoriteMovies: [],
+    following: [],
+  },
 };
 
 export const userSlice = createSlice({
   name: "media",
   initialState: initialState,
   reducers: {
-   login :(state , action) => {
-     localStorage.setItem("user" , JSON.stringify(action.payload))
-        state.user = action.payload;
+    login: (state, action) => {
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      action.payload.token &&
+        localStorage.setItem("token", action.payload.token);
+
+      state.user = action.payload;
     },
-    logout :(state) => {
-        state.user = {};
-    }
+    logout: (state) => {
+      localStorage.removeItem("token");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          favoriteMovies: [],
+          following: [],
+        })
+      );
 
-    }
+      state.user = {
+        favoriteMovies: [],
+        following: [],
+      };
+    },
   },
-);
+});
 
-export const { login } = userSlice.actions;
+export const { login, logout } = userSlice.actions;

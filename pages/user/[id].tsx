@@ -6,140 +6,144 @@ import client from "../../apollo-client";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/user";
-
+import { addToast } from "../../redux/toasted";
 export const getServerSideProps = async (context) => {
- try {
+  try {
     const { id } = context.query;
 
-    const { data } = await client
-    .query({
+    const { data } = await client.query({
       query: gql`
         query Query($getUserId: String!) {
-  getUser(id: $getUserId) {
-    id
-    name
-    email
-    image
-    updatedAt
-    verified
-    createdAt
-    following
-    favoriteMovies {
-      movieName
-      movieID
-      movieImage
-    }
-  }
-}
+          getUser(id: $getUserId) {
+            id
+            name
+            email
+            image
+            updatedAt
+            verified
+            createdAt
+            following
+            favoriteMovies {
+              movieName
+              movieID
+              movieImage
+            }
+          }
+        }
       `,
-      variables :{
-        getUserId : id
-      }
-    })
-    console.log(data.getUser)
+      variables: {
+        getUserId: id,
+      },
+    });
+    console.log(data.getUser);
     return {
-        props: {
-          data:data.getUser,
-        },
-      };
- } catch (error) {
+      props: {
+        data: data.getUser,
+      },
+    };
+  } catch (error) {
     return {
-        redirect: {
-          permanent: false,
-          destination: "/shows",
-        },
-      };
- }
- 
-  
+      redirect: {
+        permanent: false,
+        destination: "/shows",
+      },
+    };
+  }
 };
 export default function User(props) {
-    const [userData , setUserData] = useState(props.data)
-    const user = useSelector((state:any) => state.user.user)
+  const [userData, setUserData] = useState(props.data);
+  const user = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
 
-    const followUser = async (e) => {
-        const { data } = await client
-    .mutate({
+  const followUser = async (e) => {
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
+    const { data } = await client.mutate({
       mutation: gql`
         mutation Mutation($followingId: String!) {
-  followUser(followingId: $followingId) {
-    id
-    name
-    email
-    image
-    updatedAt
-    verified
-    createdAt
-    favoriteMovies {
-      movieName
-      movieID
-      movieImage
-    }
-    savedMovies {
-      movieName
-      movieID
-      movieImage
-    }
-    following
-    deleted
-  }
-}
-      `,
-      variables :{
-        followingId : userData.id
-      },
-      context : {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-      }}
-    })
-    
-    dispatch(login(data.followUser))
-    }
-
-
-
-    const unFollowUser = async (e) => {
-        const { data } = await client
-    .mutate({
-      mutation: gql`
-         mutation UnFollowUser($followingId: String!) {
-        unFollowUser(followingId: $followingId) {
-          id
-          name
-          email
-          image
-          updatedAt
-          verified
-          createdAt
-          favoriteMovies {
-            movieName
-            movieID
-            movieImage
+          followUser(followingId: $followingId) {
+            id
+            name
+            email
+            image
+            updatedAt
+            verified
+            createdAt
+            favoriteMovies {
+              movieName
+              movieID
+              movieImage
+            }
+            savedMovies {
+              movieName
+              movieID
+              movieImage
+            }
+            following
+            deleted
           }
-          savedMovies {
-            movieName
-            movieID
-            movieImage
-          }
-          deleted
-          following
         }
-      }
       `,
-      variables :{
-        followingId : userData.id
+      variables: {
+        followingId: userData.id,
       },
-      context : {
+      context: {
         headers: {
           authorization: `Bearer ${localStorage.getItem("token")}`,
-      }}
-    })
-    dispatch(login(data.unFollowUser))
+        },
+      },
+    });
+    console.log(data.followUser);
+    dispatch(login(data.followUser));
+  };
 
-    }
-  
+  const unFollowUser = async (e) => {
+    const { data } = await client.mutate({
+      mutation: gql`
+        mutation UnFollowUser($followingId: String!) {
+          unFollowUser(followingId: $followingId) {
+            id
+            name
+            email
+            image
+            updatedAt
+            verified
+            createdAt
+            favoriteMovies {
+              movieName
+              movieID
+              movieImage
+            }
+            savedMovies {
+              movieName
+              movieID
+              movieImage
+            }
+            deleted
+            following
+          }
+        }
+      `,
+      variables: {
+        followingId: userData.id,
+      },
+      context: {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      },
+    });
+
+    dispatch(login(data.unFollowUser));
+  };
+
   return (
     <div>
       <div className="trending py-20 text-5xl">
@@ -154,20 +158,37 @@ export default function User(props) {
                 objectFit="cover"
               />
             </div>
-            <div className="name text-center  my-16">{userData.name.toUpperCase()}</div>
+            <div className="name text-center  my-16">
+              {userData.name.toUpperCase()}
+            </div>
             <div className="flex gap-6 justify-center my-12">
-              <button  className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:opacity-75 ">
+              <button className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:opacity-75 ">
                 Block
-                
               </button>
-             {user.id?!user.following.includes(userData.id)? <button onClick={followUser} className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
-                Follow
-              </button > : <button onClick={unFollowUser} className="bg-red-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
-                Unfollow
-              </button > : <button onClick={followUser} className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
-                Follow
-              </button > 
-             }
+              {user.id ? (
+                !user.following.includes(userData.id) ? (
+                  <button
+                    onClick={followUser}
+                    className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75"
+                  >
+                    Follow
+                  </button>
+                ) : (
+                  <button
+                    onClick={unFollowUser}
+                    className="bg-red-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75"
+                  >
+                    Unfollow
+                  </button>
+                )
+              ) : (
+                <button
+                  onClick={followUser}
+                  className="bg-green-600 text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75"
+                >
+                  Follow
+                </button>
+              )}
             </div>
           </div>
           <div className="text-6xl font-bold">Favorite Movies:</div>
@@ -180,13 +201,13 @@ export default function User(props) {
                       className="sm:w-[90%] md:w-[31%] w-[40%] my-10"
                       key={item.id}
                     >
-                        <Card
+                      <Card
                         image={item.movieImage}
                         name={item.movieName}
                         date={"2022"}
                         lang={"EN"}
                         id={item.movieID}
-                        />
+                      />
                     </div>
                   );
                 }

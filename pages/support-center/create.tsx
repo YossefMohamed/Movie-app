@@ -7,8 +7,10 @@ import client from "../../apollo-client";
 import Alert from "../../components/Alert";
 import Post from "../../components/Post";
 import Tag from "../../components/Tag";
-
+import { addToast } from "../../redux/toasted";
 export default function Create(props) {
+  const { user } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   const [tag, setTag] = useState("");
   const [error, setError] = useState("");
   const [content, setContent] = useState("");
@@ -53,11 +55,20 @@ export default function Create(props) {
     setTags(tags.filter((t) => t !== tag));
   };
   const addTag = (tag) => {
-    setTags([...tags, tag]);
+    setTags([...tags, tag.toLowerCase()]);
     setTag("");
   };
   const onClickCreate = async (e) => {
     e.preventDefault();
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     setError("");
     setAppear(false);
     if (tags.length === 0) {

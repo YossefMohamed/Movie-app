@@ -2,11 +2,23 @@ import { gql } from "@apollo/client";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import client from "../apollo-client";
+import { useDispatch } from "react-redux";
+import { addToast } from "../redux/toasted";
 
 function PostComment(props) {
   const [comment, setComment] = useState(props.comment);
   const { user } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   const unLikeComment = async () => {
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     const { data } = await client.mutate({
       mutation: gql`
         mutation Mutation($commentId: String!) {
@@ -36,6 +48,15 @@ function PostComment(props) {
     setComment(data.unLikeComment);
   };
   const likeComment = async () => {
+    if (!user.id) {
+      dispatch(
+        addToast({
+          type: "error",
+          message: "Please Login",
+        })
+      );
+      return;
+    }
     const { data } = await client.mutate({
       mutation: gql`
         mutation Mutation($commentId: String!) {
