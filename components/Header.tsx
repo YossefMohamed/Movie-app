@@ -21,15 +21,15 @@ export default function Header() {
   }, [id]);
   const dispatch = useDispatch();
   return (
-    <div className="opacity-0 lg:opacity-100 flex container   fixed top-4 left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-full">
-      <div className="icon text-red-600 text-6xl">
+    <div className="opacity-0 lg:opacity-100 flex py-6 px-4   fixed top-4 left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-full">
+      <div className="icon text-red-600 text-5xl">
         <Link href="/">
           <a>
             <RiVipCrownFill />
           </a>
         </Link>
       </div>
-      <div className="links text-text-dark text-6xl mt-10">
+      <div className="links text-text-dark text-5xl mt-10">
         <Link href="/shows">
           <a>
             <IoAlbums />
@@ -38,14 +38,14 @@ export default function Header() {
       </div>
       {isUser && (
         <>
-          <div className="links text-text-dark text-6xl mt-10">
+          <div className="links text-text-dark text-5xl mt-10">
             <Link href="/favorites">
               <a>
                 <MdFavorite />
               </a>
             </Link>
           </div>
-          <div className="links text-text-dark text-6xl mt-10">
+          <div className="links text-text-dark text-5xl mt-10">
             <Link href="/saved">
               <a>
                 <BsFillBookmarkFill />
@@ -54,7 +54,7 @@ export default function Header() {
           </div>
         </>
       )}
-      <div className="links text-text-dark text-6xl mt-10">
+      <div className="links text-text-dark text-5xl mt-10">
         <Link href="/saved">
           <a>
             <IoMoon />
@@ -62,7 +62,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="links text-text-dark text-6xl mt-10">
+      <div className="links text-text-dark text-5xl mt-10">
         <Link href="/support-center">
           <a>
             <FaHandHoldingHeart />
@@ -71,7 +71,7 @@ export default function Header() {
       </div>
 
       {!isUser ? (
-        <div className="links text-text-dark text-6xl mt-10">
+        <div className="links text-text-dark text-5xl mt-10">
           <Link href="/login">
             <a>
               <RiLoginCircleFill />
@@ -80,7 +80,7 @@ export default function Header() {
         </div>
       ) : (
         <div
-          className="links text-text-dark text-6xl mt-10"
+          className="links text-text-dark text-5xl mt-10"
           onClick={() => dispatch(logout())}
         >
           <div>
@@ -91,7 +91,7 @@ export default function Header() {
         </div>
       )}
       {isUser && (
-        <div className="links text-text-dark text-6xl mt-auto">
+        <div className="links text-text-dark text-5xl mt-auto">
           <div>
             <Link href="/me">
               <a>
@@ -99,8 +99,8 @@ export default function Header() {
                   src={`https://avatars.dicebear.com/api/big-ears-neutral/${id}.svg`}
                   alt="Picture of the author"
                   className="rounded-full"
-                  width={50}
-                  height={50}
+                  width={40}
+                  height={40}
                   objectFit="contain"
                 />
               </a>

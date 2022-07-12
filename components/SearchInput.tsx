@@ -10,6 +10,7 @@ function SearchInput() {
       className=" relative rounded-xl overflow-hidden flex justify-start "
       onSubmit={(e) => {
         e.preventDefault();
+        setKeyword("");
         router.push(`/search/${keyword}`);
       }}
     >

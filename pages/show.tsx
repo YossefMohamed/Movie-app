@@ -242,7 +242,7 @@ export default function Show(props) {
   useEffect(() => {
     setLoading(true);
     getComments();
-  }, []);
+  }, [router.query]);
 
   const handleAddComment = async (e) => {
     e.preventDefault();

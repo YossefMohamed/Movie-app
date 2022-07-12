@@ -11,8 +11,8 @@ export default function SupportPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-
   const router = useRouter();
+  const [dropDown, setDropDown] = useState(false);
   const genres = [
     { id: 0, name: "All" },
 
@@ -37,11 +37,13 @@ export default function SupportPage() {
   ];
   useEffect(() => {
     setLoading(true);
+    setDropDown(false);
+    setError("");
     client
       .mutate({
         mutation: gql`
-          query GetAllPosts($tag: String!) {
-            getAllPosts(tag: $tag) {
+          query GetAllPosts($tag: String!, $following: Boolean, $sort: String) {
+            getAllPosts(tag: $tag, following: $following, sort: $sort) {
               id
               content
               likes
@@ -72,6 +74,17 @@ export default function SupportPage() {
         `,
         variables: {
           tag: router.query.tag ? router.query.tag : "all",
+          following: router.query.following
+            ? router.query.following === "true"
+              ? true
+              : false
+            : false,
+          sort: router.query.sortBy ? router.query.sortBy : "createdAt",
+        },
+        context: {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         },
       })
       .then(({ data }) => {
@@ -82,8 +95,8 @@ export default function SupportPage() {
         setLoading(false);
         setError(error.message);
       });
-  }, [router.query.tag]);
-
+  }, [router.query]);
+  console.log(router.query.sortBy ? router.query.sortBy : "createdAt");
   return (
     <div className="py-10">
       {error ? <Alert type="danger" message={error} /> : null}
@@ -98,7 +111,13 @@ export default function SupportPage() {
                   key={genre.id}
                   className="inline-flex items-center m-2 px-5 py-2 bg-secondary-dark cursor-pointer hover:bg-gray-300 rounded-full text-xl font-semibold text-gray-600"
                   onClick={() => {
-                    router.push("/support-center?tag=" + genre.name);
+                    router.push({
+                      pathname: "/support-center",
+                      query: {
+                        ...router.query,
+                        tag: genre.name,
+                      },
+                    });
                   }}
                 >
                   <span className="ml-1">{genre.name.toUpperCase()}</span>
@@ -108,13 +127,113 @@ export default function SupportPage() {
           </div>
 
           <div className="flex gap-6 mb-12">
-            <button className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:opacity-75 ">
+            <button
+              onMouseEnter={() => setDropDown(true)}
+              onMouseLeave={() => setDropDown(false)}
+              className="flex items-center relative bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:bg-gray-600 "
+            >
               Sort By
+              <svg
+                class="w-4 h-4 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+              {dropDown && (
+                <ul className="dropdown absolute z-50 top-full right-0 p-5 px-10 bg-primary-dark rounded-xl flex flex-col justify-between gap-6">
+                  <li>
+                    <span
+                      className="dropdown-item"
+                      onClick={() => {
+                        router.push({
+                          pathname: "/support-center",
+                          query: {
+                            ...router.query,
+                            sortBy: "top",
+                          },
+                        });
+                      }}
+                    >
+                      Top
+                    </span>
+                  </li>
+                  <li>
+                    <span
+                      className="dropdown-item"
+                      onClick={() => {
+                        router.push({
+                          pathname: "/support-center",
+                          query: {
+                            ...router.query,
+                            sortBy: "newest",
+                          },
+                        });
+                      }}
+                    >
+                      Newest
+                    </span>
+                  </li>
+                  <li>
+                    <span
+                      href="#"
+                      className="dropdown-item"
+                      onClick={() => {
+                        router.push({
+                          pathname: "/support-center",
+                          query: {
+                            ...router.query,
+                            sortBy: "oldest",
+                          },
+                        });
+                      }}
+                    >
+                      oldest
+                    </span>
+                  </li>
+                </ul>
+              )}
             </button>
-            <button className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75">
-              Followers
-            </button>
-            <button className="bg-secondary-dark text-3xl font-bold rounded text-white py-3 px-3 hover:button-secondary hover:opacity-75">
+
+            {router.query.following !== "true" ? (
+              <button
+                onClick={() => {
+                  router.push({
+                    pathname: "/support-center",
+                    query: {
+                      ...router.query,
+                      following: true,
+                    },
+                  });
+                }}
+                className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
+              >
+                Following
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  router.push({
+                    pathname: "/support-center",
+                    query: {
+                      ...router.query,
+                      following: false,
+                    },
+                  });
+                }}
+                className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
+              >
+                All Users
+              </button>
+            )}
+            <button className="bg-secondary-dark text-3xl font-bold rounded text-white py-3 px-3 hover:button-secondary hover:bg-gray-600">
               <AiOutlinePlus />
             </button>
           </div>

@@ -5,7 +5,9 @@ import client from "../apollo-client";
 import { useRouter } from "next/router";
 import Alert from "../components/Alert";
 import { login } from "../redux/user";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+export default function Register() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -13,7 +15,7 @@ import { useDispatch , useSelector } from "react-redux";
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const {user } = useSelector((state:any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,16 +52,8 @@ import { useDispatch , useSelector } from "react-redux";
               password: $password
               confirmPassword: $confirmPassword
             ) {
-              token,
+              token
               user {
-                favoriteMovies {
-                  movieID
-                  movieName
-                }
-                savedMovies{
-                  movieID
-                  movieName
-                }
                 id
                 name
                 email
@@ -67,7 +61,19 @@ import { useDispatch , useSelector } from "react-redux";
                 updatedAt
                 verified
                 createdAt
+                favoriteMovies {
+                  movieName
+                  movieID
+                  movieImage
+                }
+                savedMovies {
+                  movieName
+                  movieID
+                  movieImage
+                }
+                deleted
                 following
+              }
             }
           }
         `,

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import client from "../apollo-client";
 import { useDispatch } from "react-redux";
 import { addToast } from "../redux/toasted";
+import moment from "moment";
 
 function PostComment(props) {
   const [comment, setComment] = useState(props.comment);
@@ -100,7 +101,9 @@ function PostComment(props) {
           <a className="inline-block text-xl font-bold mr-2" href="#">
             {comment.user.name}
           </a>
-          <span className="text-slate-500 text-lg">25 minutes ago</span>
+          <span className="text-slate-500 text-lg">
+            {moment(Number(props.comment.createdAt)).fromNow()}
+          </span>
         </div>
         <p>{comment.content}</p>
         <div className="mt-2 flex items-center">

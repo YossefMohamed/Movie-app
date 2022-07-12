@@ -3,10 +3,10 @@ import Image from "next/image";
 const UserCard = ({ user }) => {
   return (
     <div className="flex flex-col p-5  rounded-xl bg-secondary-dark items-center">
-      <div className="w-52 h-52">
+      <div className="w-52 h-52 flex justify-center">
         <Image
           src={`https://avatars.dicebear.com/api/big-ears-neutral/${user.id}.svg`}
-          objectFit="cover"
+          objectFit="fill"
           width="100%"
           height="100%"
           className="rounded"
