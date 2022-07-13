@@ -8,7 +8,7 @@ const initialState: any = {
 };
 
 export const userSlice = createSlice({
-  name: "media",
+  name: "user",
   initialState: initialState,
   reducers: {
     login: (state, action) => {
@@ -20,13 +20,7 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       localStorage.removeItem("token");
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          favoriteMovies: [],
-          following: [],
-        })
-      );
+      localStorage.removeItem("user");
 
       state.user = {
         favoriteMovies: [],
