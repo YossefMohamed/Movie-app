@@ -7,35 +7,47 @@ import { addToast } from "../redux/toasted";
 import { login } from "../redux/user";
 
 export const Layout = ({ children }) => {
-
-  
   const toaster = useSelector((state: any) => state.toast);
 
-  const dispatch = useDispatch()
-  
-  useEffect(() => {
+  const dispatch = useDispatch();
 
-    if(toaster.message){
+  useEffect(() => {
+    if (toaster.message) {
       toast(toaster.message, {
         type: toaster.type,
       });
-      dispatch(addToast({
-        type: "",
-        message: "",
-      }))
+      dispatch(
+        addToast({
+          type: "",
+          message: "",
+        })
+      );
     }
-    
-
-    
   }, [toaster.message, toaster.type]);
 
   useEffect(() => {
-    localStorage.getItem('user') && dispatch(login(JSON.parse(localStorage.getItem('user'))))
-  },[])
-  
+    localStorage.getItem("user") &&
+      dispatch(login(JSON.parse(localStorage.getItem("user"))));
+  }, []);
+
   return (
     <div className="">
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossOrigin="anonymous"
+        />
+        <title>Crown Movies</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link
           href="https://fonts.googleapis.com/css?family=Poppins"
           rel="stylesheet"

@@ -182,7 +182,7 @@ export default function ME(props) {
                   <div className="name text-3xl font-bold">Name</div>
                   <input
                     type="text"
-                    className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+                    className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
     focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
                     placeholder="Your Name"
                     value={name}
@@ -193,7 +193,7 @@ export default function ME(props) {
                   <div className="name text-3xl font-bold">Last Name</div>
                   <input
                     type="email"
-                    className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+                    className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
     focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
                     placeholder="Your Mail"
                     value={email}
@@ -204,7 +204,7 @@ export default function ME(props) {
                   <div className="name text-3xl font-bold">Old Password</div>
                   <input
                     type="password"
-                    className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+                    className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
     focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
                     placeholder="Your Password"
                     value={oldPassword}
@@ -215,7 +215,7 @@ export default function ME(props) {
                   <div className="name text-3xl font-bold">New Password</div>
                   <input
                     type="password"
-                    className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+                    className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
     focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
                     placeholder="Your Password"
                     value={password}
@@ -228,22 +228,22 @@ export default function ME(props) {
                   </div>
                   <input
                     type="password"
-                    className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+                    className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
     focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
                     placeholder="Confirm Your Password"
                     value={passwordConfirm}
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                   />
                 </div>
-                <div className="flex gap-8">
+                <div className="d-flex d-lg-flex flex-col lg:flex-row  gap-8">
                   <div
-                    className="btn w-fit bg-secondary-dark px-16 py-5 font-bold text-3xl hover:bg-button-primary hover:text-text-dark"
+                    className="btn w-full lg:w-fit mb-0 bg-secondary-dark px-16 py-6 font-bold text-3xl hover:bg-button-primary hover:text-text-dark"
                     onClick={handleSubmit}
                   >
                     Submit
                   </div>
                   <div
-                    className="btn w-fit bg-red-500 px-16 py-5 font-bold text-3xl hover:bg-button-primary hover:text-text-dark"
+                    className="btn w-full lg:w-fit  bg-red-500 px-16 py-6 font-bold text-3xl hover:bg-button-primary hover:text-text-dark"
                     onClick={handleDelete}
                   >
                     Delete User

@@ -1,11 +1,13 @@
 import { gql } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import client from "../../apollo-client";
 import Alert from "../../components/Alert";
 import Post from "../../components/Post";
 import { useRouter } from "next/router";
+import { Rootstate } from "../../redux/store";
+import { addToast } from "../../redux/toasted";
 export default function SupportPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,6 +15,11 @@ export default function SupportPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [dropDown, setDropDown] = useState(false);
+  const { id } = useSelector((state: Rootstate) => state.user.user);
+  const [isUser, setIsUser] = React.useState(false);
+  React.useEffect(() => {
+    id ? setIsUser(true) : setIsUser(false);
+  }, [id]);
   const genres = [
     { id: 0, name: "All" },
 
@@ -40,10 +47,10 @@ export default function SupportPage() {
     setDropDown(false);
     setError("");
     client
-      .mutate({
-        mutation: gql`
-          query GetAllPosts($tag: String!, $following: Boolean, $sort: String) {
-            getAllPosts(tag: $tag, following: $following, sort: $sort) {
+      .query({
+        query: gql`
+          query GetAllPosts($tag: String!, $sort: String, $following: Boolean) {
+            getAllPosts(tag: $tag, sort: $sort, following: $following) {
               id
               content
               likes
@@ -89,13 +96,14 @@ export default function SupportPage() {
       })
       .then(({ data }) => {
         setLoading(false);
+        console.log(data.getAllPosts);
         setPosts(data.getAllPosts);
       })
       .catch((error) => {
         setLoading(false);
         setError(error.message);
       });
-  }, [router.query]);
+  }, [router.query, router.query.sortBy]);
   console.log(router.query.sortBy ? router.query.sortBy : "createdAt");
   return (
     <div className="py-10">
@@ -148,10 +156,10 @@ export default function SupportPage() {
                 ></path>
               </svg>
               {dropDown && (
-                <ul className="dropdown absolute z-50 top-full right-0 p-5 px-10 bg-primary-dark rounded-xl flex flex-col justify-between gap-6">
+                <ul className="dropdown absolute z-50 top-full left-0 bg-primary-dark rounded-xl flex flex-col justify-between">
                   <li>
                     <span
-                      className="dropdown-item"
+                      className="dropdown-item py-3 px-5 text-text-dark"
                       onClick={() => {
                         router.push({
                           pathname: "/support-center",
@@ -167,7 +175,7 @@ export default function SupportPage() {
                   </li>
                   <li>
                     <span
-                      className="dropdown-item"
+                      className="dropdown-item py-3 px-5 text-text-dark"
                       onClick={() => {
                         router.push({
                           pathname: "/support-center",
@@ -183,8 +191,7 @@ export default function SupportPage() {
                   </li>
                   <li>
                     <span
-                      href="#"
-                      className="dropdown-item"
+                      className="dropdown-item py-3 px-5 text-text-dark"
                       onClick={() => {
                         router.push({
                           pathname: "/support-center",
@@ -202,45 +209,62 @@ export default function SupportPage() {
               )}
             </button>
 
-            {router.query.following !== "true" ? (
-              <button
-                onClick={() => {
-                  router.push({
-                    pathname: "/support-center",
-                    query: {
-                      ...router.query,
-                      following: true,
-                    },
-                  });
-                }}
-                className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
-              >
-                Following
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  router.push({
-                    pathname: "/support-center",
-                    query: {
-                      ...router.query,
-                      following: false,
-                    },
-                  });
-                }}
-                className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
-              >
-                All Users
-              </button>
+            {isUser && (
+              <>
+                {router.query.following !== "true" ? (
+                  <button
+                    onClick={() => {
+                      router.push({
+                        pathname: "/support-center",
+                        query: {
+                          ...router.query,
+                          following: true,
+                        },
+                      });
+                    }}
+                    className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
+                  >
+                    Following
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      router.push({
+                        pathname: "/support-center",
+                        query: {
+                          ...router.query,
+
+                          following: false,
+                        },
+                      });
+                    }}
+                    className="bg-secondary-dark text-xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:bg-gray-600"
+                  >
+                    All Users
+                  </button>
+                )}
+              </>
             )}
-            <button className="bg-secondary-dark text-3xl font-bold rounded text-white py-3 px-3 hover:button-secondary hover:bg-gray-600">
+            <button
+              onClick={() => {
+                if (isUser) router.push("/support-center/create");
+                else
+                  dispatch(
+                    addToast({
+                      type: "error",
+                      message: "You must be logged in to create a post",
+                    })
+                  );
+              }}
+              className="bg-secondary-dark text-3xl font-bold rounded text-white py-3 px-3 hover:button-secondary hover:bg-gray-600"
+            >
               <AiOutlinePlus />
             </button>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 auto-rows-auto">
+          <div className="md:grid md:grid-cols-3 gap-4 auto-rows-auto">
             {posts.map((post) => (
-              <span id={post.id}>
+              <span key={post.id}>
                 <Post post={post} />
               </span>
             ))}

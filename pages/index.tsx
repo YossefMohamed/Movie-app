@@ -8,9 +8,6 @@ import Slider from "../components/Slider";
 import { Pagination } from "../components/Pagination";
 import { useRouter } from "next/router";
 
-
-
-
 export const getServerSideProps = async () => {
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1`
@@ -32,8 +29,8 @@ export const getServerSideProps = async () => {
 const Home: NextPage<{ trendShows: any; pages: any; recommended: any }> = (
   props
 ) => {
-const router = useRouter()
-const currentPage =1
+  const router = useRouter();
+  const currentPage = 1;
   return (
     <>
       <Head>
@@ -42,11 +39,26 @@ const currentPage =1
       </Head>
 
       <div className="trending py-20 text-5xl">
-        <h1 >Trending</h1>
-           
+        <h1>Trending</h1>
         <div className="overflow-hidden py-10">
-          <div className="flex justify-between flex-wrap gap-y-16 ">
+          <div className=" justify-between flex-wrap gap-y-16 d-none d-lg-flex ">
             <Slider>
+              {props.trendShows.map((show) => (
+                <div
+                  className="keen-slider__slide  number-slide1 "
+                  key={show.id}
+                >
+                  <CardSlider
+                    name={show.title}
+                    image={show.backdrop_path}
+                    id={show.id}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <div className="justify-between flex-wrap gap-y-16 d-flex d-lg-none">
+            <Slider perView={1.1}>
               {props.trendShows.map((show) => (
                 <div
                   className="keen-slider__slide  number-slide1 "
@@ -67,7 +79,7 @@ const currentPage =1
               {props.recommended.map((show) => {
                 return (
                   <div
-                    className="sm:w-[90%] md:w-[31%] w-[40%] my-10"
+                    className="w-[100%] md:w-[31%] my-1 md:my-6 "
                     key={show.id}
                   >
                     <Card
@@ -83,20 +95,25 @@ const currentPage =1
             </div>
           </div>
         </div>
-        <Pagination onClick={(page) => router.push('/'+page)} currentPage={currentPage} next={() => {
-          if(currentPage < props.pages){
-            return currentPage+1
-          }else{
-           return undefined
-          }}}
-          prev={() => {
-            if(currentPage !== 1){
-                return currentPage-1
-            }else{
-              return undefined
+        <Pagination
+          onClick={(page) => router.push("/" + page)}
+          currentPage={currentPage}
+          next={() => {
+            if (currentPage < props.pages) {
+              return currentPage + 1;
+            } else {
+              return undefined;
             }
           }}
-          />      </div>
+          prev={() => {
+            if (currentPage !== 1) {
+              return currentPage - 1;
+            } else {
+              return undefined;
+            }
+          }}
+        />{" "}
+      </div>
     </>
   );
 };

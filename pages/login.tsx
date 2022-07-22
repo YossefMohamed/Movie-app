@@ -93,7 +93,7 @@ export default function Login(props) {
               setError("");
               setEmail(e.target.value);
             }}
-            className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+            className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
         focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
             placeholder="email@example.com"
           />
@@ -107,7 +107,7 @@ export default function Login(props) {
               setPassword(e.target.value);
             }}
             type="password"
-            className="w-full border-0 outline-0 bg-secondary-dark p-5 text-text-dark
+            className="w-full border-0 outline-0 bg-secondary-dark p-6 text-text-dark
         focus:bg-secondary-dark focus:text-text-dark text-3xl font-bold"
             placeholder="Your Password"
           />
@@ -119,7 +119,7 @@ export default function Login(props) {
         </div>
         <button
           onClick={handleSubmit}
-          className="btn w-fit bg-secondary-dark px-16 py-5 font-bold text-3xl hover:bg-button-primary hover:text-text-dark outline-none "
+          className="btn w-fit bg-secondary-dark px-16 py-6 font-bold text-3xl hover:bg-button-primary hover:text-text-dark outline-none "
           disabled={loading || !email || !password}
         >
           Submit

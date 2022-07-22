@@ -13,15 +13,16 @@ import { MdFavorite } from "react-icons/md";
 import { FaHandHoldingHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/user";
+import { Rootstate } from "../redux/store";
 export default function Header() {
-  const { id } = useSelector((state: any) => state.user.user);
+  const { id } = useSelector((state: Rootstate) => state.user.user);
   const [isUser, setIsUser] = React.useState(false);
   React.useEffect(() => {
     id ? setIsUser(true) : setIsUser(false);
   }, [id]);
   const dispatch = useDispatch();
   return (
-    <div className="opacity-0 lg:opacity-100 flex py-6 px-4   fixed top-4 left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-full">
+    <div className="d-none d-lg-flex py-6 px-4 md:fixed top-[3%] left-4 w-fit flex-col flex-1 items-center gap-8 bg-secondary-dark rounded-3xl h-[94%] ">
       <div className="icon text-red-600 text-5xl">
         <Link href="/">
           <a>
@@ -54,14 +55,6 @@ export default function Header() {
           </div>
         </>
       )}
-      <div className="links text-text-dark text-5xl mt-10">
-        <Link href="/saved">
-          <a>
-            <IoMoon />
-          </a>
-        </Link>
-      </div>
-
       <div className="links text-text-dark text-5xl mt-10">
         <Link href="/support-center">
           <a>

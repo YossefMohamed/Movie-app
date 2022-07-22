@@ -355,32 +355,32 @@ export default function Show(props) {
                 className="object-cover "
               />
             </div>
-            <div className="z-[99]  w-full flex h-full flex-col justify-center p-10 gap-6">
+            <div className="z-[99]  w-full flex h-full flex-col gap-10 justify-center p-10 ">
               <div className="text-7xl lg:text-8xl font-bold">
                 {props.data.title}
               </div>
-              <div className="text-7xl font-bold ">
+              <div className="text-7xl lg:text-7xl font-bold ">
                 {props.data.release_date.split("-")[0]}
               </div>
               <div className="rating flex gap-4">
                 {Array(Math.ceil(rating))
                   .fill(0)
                   .map((_, i) => (
-                    <AiFillStar key={i} className="text-yellow-500" size={30} />
+                    <AiFillStar key={i} className="text-yellow-500" size={40} />
                   ))}
                 {Array(5 - Math.ceil(rating))
                   .fill(0)
                   .map((_, i) => (
-                    <AiFillStar key={i} size={30} />
+                    <AiFillStar key={i} size={40} />
                   ))}
               </div>
-              <div className="overview w-[50%] text-lg lg:text-2xl">
+              <div className="overview md:w-[50%] text-2xl lg:text-2xl">
                 {props.data.overview.length > 200
                   ? props.data.overview.slice(0, 200) + "..."
                   : props.data.overview}
               </div>
               <div className="flex gap-6">
-                <button className="bg-secondary-dark text-white font-bold py-5 px-12 rounded-full hover:button-secondary hover:opacity-75 ">
+                <button className="bg-secondary-dark text-white font-bold py-4 px-5 rounded-full hover:button-secondary hover:opacity-75 ">
                   Watch
                 </button>
 
@@ -389,14 +389,14 @@ export default function Show(props) {
                 }) ? (
                   <button
                     onClick={handleAddFavorite}
-                    className="bg-green-600 text-white font-bold py-5 px-12 rounded-full  hover:button-secondary hover:opacity-75"
+                    className="bg-green-600 text-white font-bold py-3 px-5 rounded-full  hover:button-secondary hover:opacity-75"
                   >
                     Add To Favorite
                   </button>
                 ) : (
                   <button
                     onClick={handleRemoveFavorite}
-                    className="bg-red-600 text-white font-bold py-5 px-12 rounded-full  hover:button-secondary hover:opacity-75"
+                    className="bg-red-600 text-white font-bold py-3 px-5 rounded-full  hover:button-secondary hover:opacity-75"
                   >
                     Remove From Favorite
                   </button>
@@ -407,8 +407,21 @@ export default function Show(props) {
         </div>
         <div className="section my-[50px]">
           <div className="text-6xl mb-[50px] font-bold uppercase">Images</div>
-          <div className="flex justify-between flex-wrap gap-y-16 my-16">
+          <div className=" justify-between flex-wrap gap-y-16 my-16 d-none d-lg-flex">
             <Slider>
+              {props.images.backdrops.map((image) => (
+                <div
+                  className="keen-slider__slide  number-slide1 "
+                  key={image.id}
+                >
+                  <CardSlider image={image.file_path} name="" show={true} />
+                </div>
+              ))}
+            </Slider>
+          </div>
+
+          <div className=" justify-between flex-wrap gap-y-16 my-16 d-flex d-lg-none">
+            <Slider perView={1.1}>
               {props.images.backdrops.map((image) => (
                 <div
                   className="keen-slider__slide  number-slide1 "
@@ -423,21 +436,19 @@ export default function Show(props) {
         <div className="flex section  my-[50px] flex-wrap">
           <div className="cast-container  sm:w-full lg:w-1/2 flex flex-col justify-start">
             <div className="text-6xl mb-[50px] font-bold uppercase ">Cast</div>
-            <div className="cast-list flex flex-wrap justify-start gap-16 ">
+            <div className="cast-list flex flex-wrap justify-around md:justify-start gap-16 ">
               {props.data.credits.cast.map((cast, index) => {
                 if (cast.profile_path && counter < 6) {
                   counter++;
                   return (
                     <div className="cast-container" key={index}>
                       <div
-                        className="cast-item hover:opacity-75"
+                        className="cast-item hover:opacity-75 w-[125px] h-[125px] md:h-[150px] md:w-[150px]"
                         style={{
                           backgroundImage: `url(https://image.tmdb.org/t/p/w500/${cast.profile_path})`,
                           backgroundSize: "cover",
                           backgroundPosition: "center",
                           backgroundRepeat: "no-repeat",
-                          height: "150px",
-                          width: "150px",
                           cursor: "pointer",
                           transition: "all 0.3s ease-in-out",
                         }}
@@ -488,7 +499,7 @@ export default function Show(props) {
         <div className="section watch-section">
           <div className="text-6xl mb-[50px] font-bold uppercase">Watch</div>
           {props.videos[0] ? (
-            <div className="h-[650px]">
+            <div className="h-[450px] md:h-[650px]">
               <iframe
                 className="w-full h-full rounded-xl"
                 src={`https://www.youtube.com/embed/${props.videos[0].key}`}
