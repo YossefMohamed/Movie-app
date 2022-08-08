@@ -56,7 +56,16 @@ const Shows: NextPage<{ pages: any; recommended: any; genres: any }> = (
   props
 ) => {
   const router = useRouter();
-  const { cat = "all", page = 1 } = router.query;
+  // const {
+  //   cat = "all",
+  //   page = 1,
+  // }: {
+  //   cat: string;
+  //   page: number;
+  // } = router.query;
+  const cat: string =
+    typeof router.query.cat === "string" ? router.query.cat : "all";
+  const page = router.query.page || 1;
   const currentPage = Number(page);
 
   return (
