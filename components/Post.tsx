@@ -257,7 +257,6 @@ function Post(props) {
         value={comment}
         onChange={(text) => setComment(text)}
         onEnter={onAddComment}
-        placeholder="Type a message"
       />
 
       {/* Comments content */}
