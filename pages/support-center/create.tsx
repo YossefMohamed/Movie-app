@@ -8,7 +8,9 @@ import Alert from "../../components/Alert";
 import Post from "../../components/Post";
 import Tag from "../../components/Tag";
 import { addToast } from "../../redux/toasted";
+import { useRouter } from "next/router";
 export default function Create(props) {
+  const router = useRouter();
   const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const [tag, setTag] = useState("");
@@ -106,7 +108,7 @@ export default function Create(props) {
         },
       },
     });
-    console.log(data);
+    router.push("/support-center");
   };
   return (
     <div className="my-20">
