@@ -9,7 +9,7 @@ export default function following(props) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
+  const type = typeof router.query.type === "string" ? router.query.type : "";
   useEffect(() => {
     setLoading(true);
     client
@@ -66,7 +66,7 @@ export default function following(props) {
           <div className="flex gap-6 mb-12">
             <button
               className={`${
-                router.query.type?.toLowerCase() === "following"
+                type.toLowerCase() === "following"
                   ? "bg-red-400"
                   : "bg-secondary-dark"
               } text-2xl text-white font-bold py-3 px-10 rounded hover:button-secondary hover:opacity-75 `}
@@ -78,7 +78,7 @@ export default function following(props) {
             </button>
             <button
               className={`${
-                router.query.type?.toLowerCase() === "followers"
+                type.toLowerCase() === "followers"
                   ? "bg-red-400"
                   : "bg-secondary-dark"
               } bg-secondary-dark text-2xl text-white font-bold py-3 px-10 rounded  hover:button-secondary hover:opacity-75`}
